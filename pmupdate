@@ -1,0 +1,35 @@
+---
+- name: Update Proxmox Packages
+  hosts: proxmox_host  # Replace with your Proxmox host's hostname/IP
+  become: yes  # Use become for privilege escalation (sudo)
+  vars:
+    # Define a variable for the package cache timeout
+    apt_cache_timeout: 600 # in seconds
+
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+        cache_valid_time: "{{ apt_cache_timeout }}"  # Set cache validity (optional)
+      when: ansible_os_family == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Upgrade installed packages (full-upgrade)
+      apt:
+        upgrade: full  # or "dist" for a distribution upgrade
+        autoremove: yes
+        autoclean: yes
+      when: ansible_os_family == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Check for pending reboots
+      stat:
+        path: /var/run/reboot-required
+      register: reboot_check
+
+    - name: Reboot the server if required
+      reboot:
+        msg: "Reboot initiated by Ansible for security updates"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 0
+      when: reboot_check.stat.exists
