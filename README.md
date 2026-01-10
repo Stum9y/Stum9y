@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @Stum9y
-- 👀 I’m interested in Android App Development/Homelab
-- 🌱 I’m currently learning Android App Development through work
+- 👀 I’m interested in Homelab Shenaingans 
+- 🌱 I’m currently IT Service Desk Analyst through work
 - 💞️ I’m looking to collaborate on ...
 - 📫 How to reach me ...
 - 😄 Pronouns: He/Him
