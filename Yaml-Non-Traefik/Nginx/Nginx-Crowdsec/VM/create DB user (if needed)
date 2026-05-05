@@ -1,0 +1,15 @@
+#db up
+docker compose up -d db
+
+#Then create DB user (once):
+docker exec -it npm-db mysql -u root -p
+
+CREATE DATABASE IF NOT EXISTS npm;
+
+CREATE USER 'npm'@'%' IDENTIFIED BY 'CHANGE_ME_STRONG';
+
+GRANT ALL PRIVILEGES ON npm.* TO 'npm'@'%';
+
+FLUSH PRIVILEGES;
+
+EXIT;

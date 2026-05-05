@@ -1,0 +1,35 @@
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      - TZ=${TZ}
+      # remove old images after update (useful for saving space)
+      - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
+      # the below will ignore labels set. It is worth checking out labels as that can be a more scalabe solution (automatic)
+      - WATCHTOWER_DISABLE_CONTAINERS=${WATCHTOWER_DISABLE_CONTAINERS}
+      - WATCHTOWER_MONITOR_ONLY=${WATCHTOWER_MONITOR_ONLY}
+      # Cron job
+      - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
+      - WATCHTOWER_RUN_ONCE=${WATCHTOWER_RUN_ONCE}
+      # Clean Up unused images
+      - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
+      # Debug
+      - WATCHTOWER_DEBUG=${WATCHTOWER_DEBUG}
+      # choose whether to restart the containers after updates
+      - WATCHTOWER_INCLUDE_RESTARTING=${WATCHTOWER_INCLUDE_RESTARTING}
+      # Monitoring Containers
+      - WATCHTOWER_MONITOR_ONLY=${WATCHTOWER_MONITOR_ONLY}
+      # you can tell watchtower to do updates and restarts one by one - can be helpful
+      - WATCHTOWER_ROLLING_RESTART=${WATCHTOWER_ROLLING_RESTART}
+      # Notifications
+      - WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
+      - WATCHTOWER_NOTIFICATION_URL=${DISCORD_WEBHOOK_URL}
+      - WATCHTOWER_LABEL_ENABLE=${WATCHTOWER_LABEL_ENABLE}
+      - WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATIONS}
+      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=${WATCHTOWER_NOTIFICATION_GOTIFY_URL}
+      - WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN=${WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN}
+      - WATCHTOWER_NOTIFICATIONS_HOSTNAME=${WATCHTOWER_NOTIFICATIONS_HOSTNAME}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped

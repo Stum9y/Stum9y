@@ -1,0 +1,18 @@
+docker exec -it crowdsec sh cscli bouncers update crowdsec-watcher --local
+
+docker exec -it crowdsec cscli bouncers delete crowdsec-watcher
+
+docker exec -it crowdsec cscli bouncers list
+
+docker exec -it crowdsec cscli bouncers delete crowdsec-nginx
+
+docker exec -it crowdsec cscli bouncers add crowdsec-watcher
+
+docker exec -it crowdsec sh -c '
+  echo "Deleting old watcher...";
+  cscli bouncers delete crowdsec-watcher 2>/dev/null || echo "No old watcher found";
+  echo "Adding new watcher...";
+  cscli bouncers add crowdsec-watcher;
+  echo "New credentials:";
+  cat /docker/crowdsec/config/local_api_credentials.yaml
+'

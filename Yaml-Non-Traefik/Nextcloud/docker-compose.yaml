@@ -1,0 +1,38 @@
+--- 
+version: "2"
+services: 
+  app: 
+    depends_on: 
+      - db
+    environment: 
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=${MYSQL_HOST}
+    image: lscr.io/linuxserver/nextcloud:latest
+    links: 
+      - db
+    ports: 
+      - 85:80
+      - 445:443
+    restart: always
+    volumes: 
+      - /mnt/Dockerconfigs/Proxmox-Production/VM/nextcloud:/var/www/html
+      - /mnt/Dockerconfigs/Proxmox-Production/VM/nextcloud/apps:/var/www/html/custom_apps
+      - /mnt/Dockerconfigs/Proxmox-Production/VM/nextcloud/config:/var/www/html/config
+      - /mnt/Dockerconfigs/Proxmox-Production/VM/nextcloud/data:/var/www/html/data
+      - /mnt/Dockerconfigs/Proxmox-Production/VM/nextcloud/themes:/var/www/html/themes
+  db: 
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment: 
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+    image: mariadb:10.11
+    restart: always
+    volumes: 
+      - /mnt/Dockerconfigs/Database/NextcloudDB:/var/lib/mysql

@@ -1,0 +1,5 @@
+mkdir -p \
+/docker/npm/{data,logs,letsencrypt} \
+/docker/mariadb/conf.d \
+/docker/fail2ban/{data,jail.d,filter.d,action.d} \
+/docker/crowdsec/{config,db,acquis.d,bouncers}

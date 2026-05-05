@@ -1,0 +1,281 @@
+__________________________________________________________________________________________________________________________________________________________
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------------AFTER SETUP------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|________________________________________________________________________________________________________________________________________________________|
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect.
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 51413:51413
+      - 51413:51413/udp
+      - 58846:58846 #optional
+      - 8112:8112 # deluge
+      - 8008:8008 # qbittorrent
+      - 9091:9091 # Transmission
+      - 8191:8191 # Flaresolverr
+      - 9696:9696 # Prowler
+      - 3000:3000 # brave
+      - 3001:3001 # brave2
+      - 8000:8000 #http-port
+    volumes:
+      - /home/linuxadmin/appdata/glutun:/gluetun
+    environment:
+      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+      # OpenVPN:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      # Wireguard:
+      - VPN_TYPE=${VPN_TYPE}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      # Timezone for accurate log times
+      - TZ=${TZ}
+      # Server list updater
+      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
+      - UPDATER_PERIOD=${UPDATER_PERIOD}
+      - FIREWALL_OUTBOUND_SUBNETS=${FIREWALL_OUTBOUND_SUBNETS}
+      - HTTP_CONTROL_SERVER_ADDRESS=${HTTP_CONTROL_SERVER_ADDRESS}
+      - HTTP_CONTROL_SERVER_LOG=${HTTP_CONTROL_SERVER_LOG}
+      - HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH=${HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH}
+    restart: always
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DELUGE_LOGLEVEL=${DELUGE_LOGLEVEL}
+    volumes:
+      - /home/linuxadmin/appdata/deluge:/config
+      - /mnt/media/Downloads:/downloads
+    depends_on:
+      - gluetun
+    restart: always
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${WEBUI_PORT}
+    volumes:
+      - /home/linuxadmin/appdata/qbittorrent:/config
+      - /mnt/media/Downloads:/downloads
+    depends_on:
+      - gluetun
+    restart: always
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}
+      - USER=${USER}
+      - PASS=${PASS}
+      - WHITELIST=${WHITELIST}
+      - PEERPORT=${PEERPORT}
+      - HOST_WHITELIST=${HOST_WHITELIST}
+    volumes:
+      - /home/linuxadmin/appdata/transmission:/config
+      - /mnt/media/Downloads/transmission:/downloads
+      - /mnt/media/Downloads/transmission/watch:/watch
+    depends_on:
+      - gluetun
+    restart: always
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: container:gluetun
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/prowlarr:/config
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/radarr:/config
+      - /mnt/media/Movies:/movies #optional
+      - /mnt/media/Downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: always
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/sonarr:/config
+      - /mnt/media/TV:/tv #optional
+      - /mnt/media/Downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: always
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/lidarr:/config
+      - /mnt/media/Music:/music #optional
+      - /mnt/media/Downloads:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: always
+
+#  readarr:
+#    image: lscr.io/linuxserver/readarr:nightly
+#    container_name: readarr
+#    environment:
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#    volumes:
+#      - /home/linuxadmin/appdata/readarr:/config
+#      - /mnt/media/Books:/books #optional
+#      - /mnt/media/Downloads:/downloads #optional
+#    ports:
+#      - 8787:8787
+#    restart: always
+
+#---------------------------------------------------------------------#
+#     Homarr - A simple, yet powerful dashboard for your server.     #
+#---------------------------------------------------------------------#
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /home/linuxadmin/appdata/Homarr/configs:/app/data/configs
+      - /home/linuxadmin/appdata/Homarr/icons:/app/public/icons
+      - /home/linuxadmin/appdata/Homarr/data:/data
+    ports:
+      - 7575:7575
+    restart: always
+
+#---------------------------------------------------------------------#
+#                    Metrics & Media Requesting                       #
+#---------------------------------------------------------------------#
+
+  jellystat:
+    container_name: jellystat
+    image: ghcr.io/jellystat:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_IP: ${POSTGRES_IP}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - /home/linuxadmin/appdata/jellystat/backup-data:/app/backend/backup-data
+    depends_on:
+      - jellystat-db
+    ports:
+      - "3000:3000"
+
+  jellystat-db:
+    container_name: jellystat-db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /home/linuxadmin/appdata/jellystat/postgres-data:/var/lib/postgresql/data
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/jellyseerr:/app/config
+    depends_on:
+      - sonarr
+      - radarr
+    ports:
+      - 5055:5055
+    restart: always
+
+#---------------------------------------------------------------------#
+#                        VPN Brave Browser                            #
+#---------------------------------------------------------------------#
+
+  brave:
+    image: lscr.io/linuxserver/brave:latest
+    container_name: brave
+    network_mode: service:gluetun
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /home/linuxadmin/appdata/brave/config:/config
+    depends_on:
+      - gluetun
+    #ports:
+     # - 3000:3000 # brave
+      #- 3001:3001 # brave2
+    shm_size: 1gb
+    restart: unless-stopped

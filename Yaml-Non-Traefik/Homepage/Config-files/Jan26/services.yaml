@@ -1,0 +1,492 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+- Networking:
+
+    - MySpeed-LXC:
+        href: http://192.168.68.74:5216
+        description: MySpeed Speed test
+        icon: si-adguard
+        siteMonitor: http://192.168.68.74:5216
+        widget:
+            type: myspeed
+            url: http://192.168.68.74:5216
+
+    - Nginx-Proxy-Manager:
+        icon: si-npm
+        href: http://192.168.68.121:81
+        description: External-Proxy
+        ping: http://192.168.68.121:81
+        widget:
+            type: npm
+            url: http://192.168.68.121:81
+            username: cruddle19873@gmail.com
+            password: Proxm0xv3npm
+
+    - Arr-Stack-LXC-Gluetun:
+        href: http://192.168.68.107:8000
+        description: Pihosted Wireguard-VPN Tunnel
+        icon: gluetun.png
+        ping: http://192.168.68.107:8000
+        widget:
+            type: gluetun
+            fields: ["public_ip", "region", "country"]
+            url: http://192.168.68.107:8000
+
+    - WG-Easy:
+        href: http://192.168.68.150:51891
+        description: Pi-Hole-LXC
+        icon: si-wireguard
+        siteMonitor: http://192.168.68.150:51891
+        widget:
+            type: wgeasy
+            url: http://192.168.68.150:51891
+            password: W1reguardstumpy-tech
+            threshold: 2 # optional
+
+    - Pihole-Nuc:
+        href: http://192.168.69.8/admin
+        description: Pi-Hole-Nuc-HA
+        icon: si-pihole
+        siteMonitor: http://192.168.69.8/admin
+        widget:
+            type: pihole
+            url: http://192.168.69.8:80
+            version: 6 # required if running v6 or higher, defaults to 5
+            key: v0w/ged7FW+QWWQi/C9Dy23WlTnOts9nbG41Twr87ZQ=
+
+    - Pi-Hole-Pi-4b-WG-HA:
+        href: http://192.168.69.9/admin
+        description: Pihole-Pi3b-WG-HA
+        icon: si-pihole
+        siteMonitor: https://192.168.69.9
+        widget:
+            type: pihole
+            url: http://192.168.69.9:80
+            version: 6 # required if running v6 or higher, defaults to 5
+            key: JhXB+/ZPfO6ae9e7s/KwU9BKcIe/sbhRzrQfNTa/mUg=
+
+    - Pi-Hole-LXC-WG/Backup-HA:
+        href: http://192.168.69.10:80/admin
+        description: Pihole-LXC-WG-HA
+        icon: si-pihole
+        siteMonitor: http://192.168.69.10:80
+        widget:
+            type: pihole
+            url: http://192.168.69.10:80
+            version: 6 # required if running v6 or higher, defaults to 5
+            key: tq73mc4CTlL83kOcdW4tNyNgTLfl0+rlWtxpR17oQzA=
+
+#    - Deco-Mesh-Router:
+#        href: http://192.168.68.1
+#        description: Mesh Wifi
+#        icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQum2mlmYt6Y_J0ffWTn-aShYcl9XMhMs0Ebg&s
+#        siteMonitor: http://192.168.68.1
+
+- Virtulisation & Storage:
+
+    - Synology-Nas:
+        href: https://192.168.68.100:6869
+        description: Synology Storage
+        icon: si-synology
+        siteMonitor: http://192.168.68.100
+        widget:
+            type: diskstation
+            url: https://192.168.68.100:6869
+            username: remote_stats
+            password: Synology_rem0te_stats
+            volume: volume_1
+
+    - Proxmox-Dell-T5810-Server:
+        href: https://192.168.68.101:8006/
+        description: Proxmox-Dell
+        icon: si-proxmox
+        siteMonitor: https://192.168.68.101:8006/
+        widget:
+            type: proxmox
+            url: https://192.168.68.101:8006
+            username: homepage-ro-api@pam!homepage
+            password: b14ba205-2589-476a-803b-3644cbc5d566
+
+    - Proxmox-Nuc:
+        href: https://192.168.69.6:8006/
+        description: Proxmox-Nuc
+        icon: si-proxmox
+        siteMonitor: https://192.168.69.6:8006/
+        widget:
+            type: proxmox
+            url: https://192.168.69.6:8006
+            username: Stats@pam!Homepage
+            password: 82110b8e-a732-460c-a2d9-d5d4feef685e
+
+    - PBS-VM:
+        href: https://192.168.69.7:8007/
+        description: Proxmox-Backup-Server-VM
+        icon: si-proxmox
+        siteMonitor: https://192.168.69.7:8007
+        widget:
+            type: proxmoxbackupserver
+            url: https://192.168.69.7:8007
+            username: api-ro-user@pbs!api-homepage
+            password: 09f59c48-79ca-467c-8f21-e2cace46a2c4
+
+#    - PBS-Synology:
+#        href: https://192.168.68.100:8007/
+#        description: Proxmox-Backup-Server-VM
+#        icon: si-proxmox
+#        siteMonitor: https://192.168.68.100:8007
+#        widget:
+ #           type: proxmoxbackupserver
+  #          url: https://192.168.68.100:8007
+   #         username: admin@pbs!homepage
+    #        password: 95c637a8-20f9-4493-b17f-ef204d028cc4
+
+    - TrueNas-VM:
+        href: http://192.168.68.57
+        description: Truenas VM
+        icon: si-truenas
+        siteMonitor: http://192.168.68.57
+        widget:
+            type: truenas
+            url: http://192.168.68.57
+            #username: user # not required if using api key
+            #password: pass # not required if using api key
+            key: 1-PAPqQNsaQawfaNpnKyaqzP0rTszBLZj18G3LnncRkGiIuwI0foguMLVdpnIeP3mW # not required if using username / password
+            enablePools: true # optional, defaults to false
+            nasType: scale # defaults to scale, must be set to 'core' if using enablePools with TrueNAS Core
+
+    - Nextcloud-VM:
+        href: https://nc.stumpy-tech.uk/
+        description: NC-VM
+        icon: si-nextcloud
+        siteMonitor: https://nc.stumpy-tech.uk/
+        widget:
+            type: nextcloud
+            url: https://nc.stumpy-tech.uk
+            username: admin
+            password: Proxm0xv3N3xtcloud!
+
+#    - OpenMediaVault-Nas:
+#        href: http://192.168.68.104:80
+#        description: OMV 7
+#        icon: si-openmediavault
+#        ping: http://192.168.68.104:80
+#        widget:
+#            type: openmediavault
+#            url: http://192.168.68.104:80
+#            username: admin
+#            password: Proxm0xv3omv7
+#            method: services.getStatus
+
+- Docker:
+
+    - Docker-Manager:
+        href: http://192.168.68.110:9000
+        description: Docker Management
+        icon: si-docker
+        siteMonitor: http://192.168.68.110:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.110:9000
+            env: 2
+            key: ptr_OqvDElV8/ENGWDX27SnZsMISspxOAQ+XW62i1fM4+Nc=
+
+    - Nuc-Docker-Internal-LXC:
+        href: http://192.168.69.14:9000
+        description: Internal-Docker-Nuc
+        icon: si-docker
+        siteMonitor: http://192.168.69.14:9000
+        widget:
+            type: portainer
+            url: http://192.168.69.14:9000
+            env: 3
+            key: ptr_VxkEvLSwBlGqK6VQvbeCFyC/rS2TeCl9MQK+P6txq9E=
+
+    - Nginx-Reverse-Proxy-Docker-LXC:
+        href: http://192.168.68.121:9000
+        description: External-Reverse-Proxy-LXC
+        icon: si-nginx
+        siteMonitor: http://192.168.68.121:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.121:9000
+            env: 2
+            key: ptr_UcKkF4ojonkFLDoWurwXgDRQBYuH/9R290whNzzKtpE=
+
+    - Exposed-Docker-LXC:
+        href: http://192.168.68.150:9000
+        description: Exposed Services
+        siteMonitor: http://192.168.68.150:9000
+        icon: si-docker
+        widget:
+            type: portainer
+            url: http://192.168.68.150:9000
+            env: 3
+            key: ptr_BQxpAduz8A711gJZvThRV1N3JO15CfyWLhG0S/bC3Wo=
+
+#    - Internal-Docker-LXC:
+#        href: http://192.168.68.121:9000
+#        description: Nginx-Docker
+#        siteMonitor: http://192.168.68.121:9000
+#        icon: si-docker
+#        widget:
+#            type: portainer
+#            url: http://192.168.68.121:9000
+#            env: 2
+#            key: ptr_WZMYw5Ks4+DMGk12IFIpg6077sPYuIpxC1j0f+Y+sfU=
+
+    - ArrStack-Docker-LXC:
+        href: http://192.168.68.107:9000
+        description: Arr-Stack-LXC-Docker
+        icon: https://avatars.githubusercontent.com/u/93388274?s=280&v=4
+        siteMonitor: http://192.168.68.107:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.107:9000
+            env: 2
+            key: ptr_ECtRw4P97GbSC+RUud9kH6+MTzfgv0gB5jxZOK6nVYI=
+
+- Dashboards:
+
+    - Deco-Mesh-Router:
+        href: http://192.168.68.1
+        description: Mesh Wifi
+        icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQum2mlmYt6Y_J0ffWTn-aShYcl9XMhMs0Ebg&s
+        siteMonitor: http://192.168.68.1
+
+    - Beszel:
+        description: Beszel-Nuc Proxmox
+        icon: beszel
+        href: http://192.168.69.2:8090
+        siteMonitor: http://192.168.69.2:8090
+        widget:
+            #type: beszel
+            #url: http://192.168.69.2:8090
+            #username: cruddle19873@gmail.com
+            #password: Proxm0xv3
+            #systemId: Name
+            # version: 1
+    - UptimeKuma:
+        href: http://192.168.70.12:3001/manage-status-page
+        description: Uptime Kuma
+        icon: si-uptimekuma
+        siteMonitor: http://192.168.70.12:3001/manage-status-page
+        widget:
+            type: uptimekuma
+            url: http://192.168.70.12:3001
+            slug: proxmoxnuc
+
+    - UptimeKuma-Backup:
+        href: http://192.168.69.12:3001/manage-status-page
+        description: Uptime Kuma Backup
+        icon: si-uptimekuma
+        siteMonitor: http://192.168.69.12:3001/manage-status-page
+#        widget:
+#            type: uptimekuma
+#            url: http://192.168.69.12:3001
+#            slug: proxmox
+
+    - Gotify:
+        href: http://192.168.68.121:90
+        description: Gotify-Notifications
+        icon: gotify.png
+        widget:
+            type: gotify
+            url: http://192.168.68.121:90
+            key: Cpb5ovVC-YZw88u
+
+    - ProxMenux-Nuc:
+        href: http://192.168.69.6:8008
+        description: ProxMenux
+        icon: si-proxmox
+        siteMonitor: http://192.168.69.6:8008
+
+    - ProxMenux-Dell:
+        href: http://192.168.68.101:8008
+        description: ProxMenux
+        icon: si-proxmox
+        siteMonitor: http://192.168.68.101:8008
+
+    - Jellystat:
+        href: http://192.168.68.107:3000/
+        description: Jellyfin Exposed Media Stats
+        icon: jellystat.png
+        ping: http://192.168.68.107:3000
+#        widget:
+#            type: jellystat
+#            url: http://192.168.68.107:3000/
+#            key: 9e01fc0c-59ce-4a81-afa6-b40919c70559
+#            fields: ["songs", "movies", "episodes", "other"]
+#            days: 30 # optional, defaults to 30
+
+    - Jellystat:
+        href: http://192.168.68.57:30176/
+        description: Jellyfin Home Media Stats
+        icon: jellystat.png
+        ping: http://192.168.68.57:30176/
+#        widget:
+#          type: jellystat
+#          url: http://192.168.68.57:30176/
+#          key: 93af9d37-180c-490d-9ec7-021d9537f0ee
+#          fields: ["songs", "movies", "episodes", "other"]
+#          days: 30 # optional, defaults to 30
+
+    - LinkWarden-LXC:
+        href: http://192.168.68.61:3000
+        description: LW-SH
+        icon: si-linkwarden
+        siteMonitor: http://192.168.68.61:3000
+        widget:
+            type: linkwarden
+            url: http://192.168.68.61:3000
+            key: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..PLDO0Wtxa72ocKdb.vb_aJgyCNbMW_vh6IIICbWmxPqWmMeXTCdLlWfsCn9UJjrFlpZSppkzthAC-rSPg9mQOIEkDg3S2UATF0pZ5uKUVSAGgFIK6HnJ8lpi5QPRXd-27OVhU.aFigYdDyXFH58beRPRrnzg #myApiKeyHere # On your Linkwarden install, go to Settings > Access Tokens. Generate a token.
+
+- Media-Libary:
+
+    - Jellyserr:
+        href: http://192.168.68.107:5055/
+        description: Media Discovery Tool
+        icon: jellyseerr.png
+        ping: http://192.168.68.107:5055
+        widget:
+            type: jellyseerr
+            url: http://192.168.68.107:5055
+            key: MTczMTUxMzQwMjgwOTkxNGYxYTlkLWQ4NjQtNGRiNy1iNTlmLTVhN2QzYzY3NmJiOQ==
+
+    - Sonarr:
+        href: http://192.168.68.107:8989
+        description: TV Libary
+        icon: si-sonarr
+        ping: http://192.168.68.107:8989
+        widget:
+            type: sonarr
+            url: http://192.168.68.107:8989
+            key: 26238384db12416aaa6ad0ea8cd12004
+#            enableQueue: true # optional, defaults to false
+    - Radarr:
+        href: http://192.168.68.107:7878
+        description: Movie Libary
+        icon: si-radarr
+        ping: http://192.168.68.107:7878
+        widget:
+            type: radarr
+            url: http://192.168.68.107:7878
+            key: 3ae3e102f7484f2b997a297da3b48c9e
+#            enableQueue: true # optional, defaults to false
+    - Qbitorrent:
+        href: http://192.168.68.107:8008
+        description: TV Downloader
+        icon: si-qbittorrent
+        ping: http://192.168.68.107:8008
+        widget:
+            type: qbittorrent
+            url: http://192.168.68.107:8008
+            username: admin
+            password: qbittorent
+            enableLeechProgress: true
+
+    - Deluge:
+        href: http://192.168.68.107:8112/
+        description: Movies Downloader
+        icon: si-deluge
+        ping: http://192.168.68.107:8112/
+        widget:
+            type: deluge
+            url: http://192.168.68.107:8112
+            password: deluge # webui password
+
+    - transmission:
+        href: http://192.168.68.107:9091/
+        description: Movies Downloader
+        icon: si-transmission
+        ping: http://192.168.68.107:9091/
+        widget:
+            type: transmission
+            url: http://192.168.68.107:9091
+            #username: username
+            #password: password
+
+- Media-Sharing-Apps:
+
+    - Jellyfin-Home-LXC:
+        href: http://192.168.69.13:8096/
+        description: Home-iGPU-LXC
+        icon: si-jellyfin
+        ping: http://192.168.69.13:8096
+        widget:
+            type: jellyfin
+            url: http://192.168.69.13:8096
+            key: 815dc6e6369a4564ae466fc3c01a6257
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: false # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - Jellyfin.Public:
+        href: https://jellyfin.stumpy-tech.uk
+        description: Jellyfin-iGPU-LXC
+        icon: si-jellyfin
+        ping: https://jellyfin.stumpy-tech.uk
+        widget:
+            type: jellyfin
+            url: http://192.168.68.92:8096
+            key: 0be793ba2947429ab35d2d4399dbda67
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: false # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - Emby-Nas:
+        href: http://192.168.68.100:8096/
+        description: Emby-Jellyseer
+        icon: si-emby
+        ping: http://192.168.68.100:8096
+        widget:
+            type: emby
+            url: http://192.168.68.100:8096
+            key: 00c047697ae5444aacf354abf4e23198
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: false # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - Immich:
+        href: https://immich2.stumpy-tech.uk/
+        description: Immich
+        icon: si-immich
+        siteMonitor: http://192.168.68.112:3001
+#        widget:
+#            type: immich
+ #           url: http://192.168.68.112:3001
+            #key: RWkSciBjW49frczBiut9h0ijISU664dHWmFdAGJFvY #homepage
+  #          key: bShKWlChOy62KSqkrcfmKt5oZin6zCqZ90UonAnKc #admin
+            #key: 2Mm3AM33VLtReCbDkjFSA2YUXwq2FDaCVBWf0D2PY #Craig
+            #version: 2
+
+- Calendar:
+
+    - Calander:
+        widget:
+          type: calendar
+          view: monthly # or 'agenda' if you prefer a list view
+          maxEvents: 100 # optional - defaults to 10
+          showTime: true # optional - show time for event happening today - defaults to false
+          previousDays: 3 # optional - shows events since three days ago - defaults to 0
+          firstDayInWeek: monday # or 'monday', depending on your preference
+          integrations:
+            - type: sonarr
+              service_group: Media-Libary # This should match the group name where Sonarr is configured
+              service_name: Sonarr # This should match the service name used for Sonarr
+              color: cyan # You can choose a color for the events from Sonarr
+              params:
+               unmonitored: true # Optional parameter for Sonarr
+            - type: radarr
+              service_group: Media-Libary # This should match the group name where Radarr is configured
+              service_name: Radarr # This should match the service name used for Radarr
+              color: green # You can choose a color for the events from Radarr
+              params:
+               unmonitored: true # Optional parameter for Radarr
+

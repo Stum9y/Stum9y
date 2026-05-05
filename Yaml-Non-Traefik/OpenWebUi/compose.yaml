@@ -1,0 +1,55 @@
+services:
+ open-webui:
+   container_name: OpenWebUi
+#   network_mode: host
+   image: ghcr.io/open-webui/open-webui:latest
+   ports:
+     - 5000:8080
+   extra_hosts:
+     - host.docker.internal:host-gateway
+   environment:
+     - OLLAMA_BASE_URL=${OLLAMA_BASE_URL}
+   volumes:
+     - path/to/config/ai-openweb:/app/backend/data
+   restart: unless-stopped
+   security_opt:
+       - no-new-privileges:true
+
+# networks:
+#   nginx:
+#     external: true
+#
+#   ollama-webui:
+#    build:
+#      context: .
+#      args:
+#        OLLAMA_API_BASE_URL: '/ollama/api'
+#      dockerfile: Dockerfile
+#    image: ghcr.io/open-webui/open-webui:main
+#    container_name: ollama-webui
+#    depends_on:
+#      - ollama
+#    ports:
+#      - 8181:8080
+#     environment:
+#      - "OLLAMA_API_BASE_URL=http://<IP Address>:11434/api"
+#     extra_hosts:
+#      - host.docker.internal:host-gateway
+#
+#  labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.open-webui.entrypoints=http-external"
+#      - "traefik.http.routers.open-webui.rule=Host(`my.domain.uk`)"
+#      - "traefik.http.middlewares.open-webui-https-redirect.redirectscheme.scheme=https-external"
+#      - "traefik.http.routers.open-webui.middlewares=open-webui-https-redirect"
+#      - "traefik.http.routers.open-webui-secure.entrypoints=https-external"
+#      - "traefik.http.routers.open-webui-secure.rule=Host(`my.domain.uk`)"
+#      - "traefik.http.routers.open-webui-secure.tls=true"
+#      - "traefik.http.routers.open-webui-secure.service=open-webui"
+#      - "traefik.http.services.open-webui.loadbalancer.server.port=8080"
+#      - "traefik.docker.network=t3_proxy"
+#
+# volumes:
+#  ai-openweb:
+#     external: true
+#    name: open-webui

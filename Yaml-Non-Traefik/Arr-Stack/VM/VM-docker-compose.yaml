@@ -1,0 +1,437 @@
+__________________________________________________________________________________________________________________________________________________________
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------------BEFORE SETUP ----------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|________________________________________________________________________________________________________________________________________________________|
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect.
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 51413:51413
+      - 51413:51413/udp
+      - 58846:58846 #optional
+      - 8000:8000 # HTTP Homepage
+    volumes:
+      - /mnt/Dockerconfigs/glutun:/gluetun
+    environment:
+      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+      # OpenVPN:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      # Wireguard:
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      # Timezone for accurate log times
+      - TZ=${TZ}
+      # Server list updater
+      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
+      - UPDATER_PERIOD=${UPDATER_PERIOD}
+      - FIREWALL_OUTBOUND_SUBNETS=${FIREWALL_OUTBOUND_SUBNETS}
+      - HTTP_CONTROL_SERVER_ADDRESS=${HTTP_CONTROL_SERVER_ADDRESS}
+      - HTTP_CONTROL_SERVER_LOG=${HTTP_CONTROL_SERVER_LOG}
+    restart: always
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DELUGE_LOGLEVEL=${DELUGE_LOGLEVEL}
+    volumes:
+      - /mnt/Dockerconfigs/deluge:/config
+      - /mnt/Synologymedia/Downloads:/downloads
+    ports:
+      - 8112:8112 # deluge
+    restart: always
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${WEBUI_PORT}
+    volumes:
+      - /mnt/Dockerconfigs/qbittorrent:/config
+      - /mnt/Synologymedia/Downloads:/downloads
+    ports:
+      - 8008:8008 # qbittorrent
+    restart: always
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}
+      - USER=${USER}
+      - PASS=${PASS}
+      - WHITELIST=${WHITELIST}
+      - PEERPORT=${PEERPORT}
+      - HOST_WHITELIST=${HOST_WHITELIST}
+    volumes:
+      - /mnt/Dockerconfigs/transmission:/config
+      - /mnt/Synologymedia/Downloads/transmission:/downloads
+      - /mnt/Synologymedia/Downloads/transmission/watch:/watch
+    ports:
+      - 9091:9091 # Transmission
+    restart: always
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    ports:
+      - 8191:8191 # Flaresolverr
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/prowlarr:/config
+    ports:
+      - 9696:9696 # Prowlerr
+    restart: unless-stopped
+
+  jellyseerr: 
+    image: fallenbagel/jellyseerr:latest 
+    container_name: jellyseerr 
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      /mnt/Dockerconfigs/jellyseerr/config:/app/config
+    depends_on: 
+      - sonarr 
+      - radarr 
+    ports:
+      - 5055:5055
+    restart: always
+    
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/radarr:/config
+      - /mnt/Synologymedia/Movies:/movies #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: always
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/sonarr:/config
+      - /mnt/Synologymedia/TV:/tv #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: always
+    
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/lidarr:/config
+      - /mnt/Synologymedia/Music:/music #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: always
+    
+  readarr:
+    image: lscr.io/linuxserver/readarr:nightly
+    container_name: readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/readarr:/config
+      - /mnt/Synologymedia/Books:/books #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8787:8787
+    restart: always
+
+#---------------------------------------------------------------------#
+#     Homarr - A simple, yet powerful dashboard for your server.     #
+#---------------------------------------------------------------------#
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /mnt/Dockerconfigs/Homarr/configs:/app/data/configs
+      - /mnt/Dockerconfigs/Homarr/icons:/app/public/icons
+      - /mnt/Dockerconfigs/Homarr/data:/data
+    ports:
+      - 7575:7575
+    restart: always
+
+__________________________________________________________________________________________________________________________________________________________
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------------------------------------AFTER SETUP------------------------------------------------------------------------------|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+|________________________________________________________________________________________________________________________________________________________|
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect.
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 51413:51413
+      - 51413:51413/udp
+      - 58846:58846 #optional
+      - 8112:8112 # deluge
+      - 8008:8008 # qbittorrent
+      - 9091:9091 # Transmission
+      - 8191:8191 # Flaresolverr
+      - 9696:9696 # Prowlerr
+      - 8000:8000 #http-port
+    volumes:
+      - /mnt/Dockerconfigs/glutun:/gluetun
+    environment:
+      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
+      # OpenVPN:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      # Wireguard:
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      # Timezone for accurate log times
+      - TZ=${TZ}
+      # Server list updater
+      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
+      - UPDATER_PERIOD=${UPDATER_PERIOD}
+      - FIREWALL_OUTBOUND_SUBNETS=${FIREWALL_OUTBOUND_SUBNETS}
+      - HTTP_CONTROL_SERVER_ADDRESS=${HTTP_CONTROL_SERVER_ADDRESS}
+      - HTTP_CONTROL_SERVER_LOG=${HTTP_CONTROL_SERVER_LOG}
+    restart: always
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    network_mode: service:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DELUGE_LOGLEVEL=${DELUGE_LOGLEVEL}
+    volumes:
+      - /mnt/Dockerconfigs/deluge:/config
+      - /mnt/Synologymedia/Downloads:/downloads
+    depends_on:
+      - gluetun
+    restart: always
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${WEBUI_PORT}
+    volumes:
+      - /mnt/Dockerconfigs/qbittorrent:/config
+      - /mnt/Synologymedia/Downloads:/downloads
+    depends_on:
+      - gluetun
+    restart: always
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}
+      - USER=${USER}
+      - PASS=${PASS}
+      - WHITELIST=${WHITELIST}
+      - PEERPORT=${PEERPORT}
+      - HOST_WHITELIST=${HOST_WHITELIST}
+    volumes:
+      - /mnt/Dockerconfigs/transmission:/config
+      - /mnt/Synologymedia/Downloads/transmission:/downloads
+      - /mnt/Synologymedia/Downloads/transmission/watch:/watch
+    depends_on:
+      - gluetun
+    restart: always
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: container:gluetun
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: container:gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/prowlarr:/config
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  jellyseerr: 
+    image: fallenbagel/jellyseerr:latest 
+    container_name: jellyseerr 
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/jellyseerr:/app/config
+    depends_on: 
+      - sonarr 
+      - radarr 
+    ports:
+      - 5055:5055
+    restart: always
+    
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/radarr:/config
+      - /mnt/Synologymedia/Movies:/movies #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: always
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/sonarr:/config
+      - /mnt/Synologymedia/TV:/tv #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: always
+    
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/lidarr:/config
+      - /mnt/Synologymedia/Music:/music #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8686:8686
+    restart: always
+    
+  readarr:
+    image: lscr.io/linuxserver/readarr:nightly
+    container_name: readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/Dockerconfigs/readarr:/config
+      - /mnt/Synologymedia/Books:/books #optional
+      - /mnt/Synologymedia/Downloads:/downloads #optional
+    ports:
+      - 8787:8787
+    restart: always
+
+#---------------------------------------------------------------------#
+#     Homarr - A simple, yet powerful dashboard for your server.     #
+#---------------------------------------------------------------------#
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /mnt/Dockerconfigs/Homarr/configs:/app/data/configs
+      - /mnt/Dockerconfigs/Homarr/icons:/app/public/icons
+      - /mnt/Dockerconfigs/Homarr/data:/data
+    ports:
+      - 7575:7575
+    restart: always

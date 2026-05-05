@@ -1,0 +1,47 @@
+---
+services:
+  changedetection:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    container_name: changedetection
+    hostname: changedetection
+    volumes:
+      - ./data/datastore:/datastore
+    ports:
+      - 5000:5000
+    environment:
+      - WEBDRIVER_URL=${WEBDRIVER_URL}
+      - PLAYWRIGHT_DRIVER_URL=${PLAYWRIGHT_DRIVER_URL}
+      - BASE_URL=${BASE_URL}
+
+    depends_on:
+      playwright-chrome:
+        condition: service_started
+    restart: unless-stopped
+
+  # browser-chrome:
+  #   hostname: browser-chrome
+  #   image: selenium/standalone-chrome:125.0
+  #   shm_size: '2gb'
+  #   # volumes:
+  #   #     # Workaround to avoid the browser crashing inside a docker container
+  #   #     # See https://github.com/SeleniumHQ/docker-selenium#quick-start
+  #   #     - /dev/shm:/dev/shm
+  #   restart: unless-stopped
+
+  playwright-chrome:
+    hostname: playwright-chrome
+    image: browserless/chrome
+    restart: unless-stopped
+    environment:
+      - SCREEN_WIDTH=${SCREEN_WIDTH}
+      - SCREEN_HEIGHT=${SCREEN_HEIGHT}
+      - SCREEN_DEPTH=${SCREEN_DEPTH}
+      - ENABLE_DEBUGGER=${ENABLE_DEBUGGER}
+      - PREBOOT_CHROME=${PREBOOT_CHROME}
+      - CONNECTION_TIMEOUT=${CONNECTION_TIMEOUT}
+      - MAX_CONCURRENT_SESSIONS=${MAX_CONCURRENT_SESSIONS}
+      - CHROME_REFRESH_TIME=${CHROME_REFRESH_TIME}
+      - DEFAULT_BLOCK_ADS=${DEFAULT_BLOCK_ADS}
+      - DEFAULT_STEALTH=${DEFAULT_STEALTH}
+      # Ignore HTTPS errors, like for self-signed certs
+      - DEFAULT_IGNORE_HTTPS_ERRORS=${DEFAULT_IGNORE_HTTPS_ERRORS}

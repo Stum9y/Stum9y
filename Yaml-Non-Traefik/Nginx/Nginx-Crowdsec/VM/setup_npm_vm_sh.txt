@@ -1,0 +1,8 @@
+#Make Executable
+chmod +x setup_npm_vm.sh
+
+#Run Script
+sudo ./setup_npm_vm.sh
+
+#After Script Finishes
+docker compose up -d

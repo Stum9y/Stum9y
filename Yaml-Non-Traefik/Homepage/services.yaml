@@ -1,0 +1,297 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Networking Virtulisation & Storage:
+
+    - MySpeed:
+        href: http://192.168.68.111:5216
+        description: MySpeed Speed test
+        icon: si-adguard
+        siteMonitor: http://192.168.68.111:5216
+        widget:
+            type: myspeed
+            url: http://192.168.68.111:5216
+
+    - Adguard-Home:
+        href: http://192.168.68.150:80
+        description: Adguard DNS
+        icon: si-adguard
+        siteMonitor: http://192.168.68.150:80
+        widget:
+            type: adguard
+            url: http://192.168.68.150:80
+            username: Proxguard
+            password: Proxm0xv3
+
+    - Proxmox Cluster:
+        href: https://192.168.68.67:8006/
+        description: Olympic Cluster
+        icon: si-proxmox
+        siteMonitor: https://192.168.68.67:8006/
+        widget:
+            type: proxmox
+            url: https://192.168.68.67:8006
+            username: api@pam!homepage
+            password: 977badf8-607f-43a8-aeb1-1d492d7e74eb
+
+    # - Proxmox AI:
+    #     href: https://192.168.68.68:8006/
+    #     description: AI Machine VM
+    #     icon: si-proxmox
+    #     siteMonitor: https://192.168.68.68:8006/
+
+    - Synology-Nas:
+        href: https://192.168.68.66:6869
+        description: Synology Storage
+        icon: si-synology
+        siteMonitor: http://192.168.68.66
+        widget:
+            type: diskstation
+            url: https://192.168.68.66:6869
+            username: remote_stats
+            password: Synology_rem0te_stats
+            volume: volume_1
+
+    - OpenMediaVault-Nas:
+        href: http://192.168.68.69:88
+        description: OMV 7
+        icon: si-openmediavault
+        ping: http://192.168.68.69:88
+        widget:
+            type: openmediavault
+            url: http://192.168.68.69:88
+            username: admin
+            password: Proxm0xv3omv7
+            method: services.getStatus
+
+    - Pihosted-Gluetun:
+        href: http://192.168.68.65:8000
+        description: Pihosted Wireguard-VPN Tunnel
+        icon: gluetun.png
+        ping: http://192.168.68.65:8000
+        widget:
+            type: gluetun
+            fields: ["public_ip", "region", "country"]
+            url: http://192.168.68.65:8000
+
+    - Nginx-Proxy-Manager:
+        href: http://192.168.68.76:81
+        description: Nginx-Proxy-Manager-Exposed Docker
+        siteMonitor: http://192.168.68.76:81
+        widget:
+            type: npm
+            url: http://192.168.68.76:81
+            username: cruddle19873@gmail.com
+            password: Nginxpr0xymanager
+
+    - Deco-Mesh-Router:
+        href: http://192.168.68.1
+        description: Mesh Wifi
+        icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQum2mlmYt6Y_J0ffWTn-aShYcl9XMhMs0Ebg&s
+        siteMonitor: http://192.168.68.1
+
+    - Nextcloud-NC:
+        href: http://192.168.68.101:80
+        description: nc.stumpy-tech.uk
+        icon: si-nextcloud
+        siteMonitor:
+        widget:
+            type: nextcloud
+            url: http://192.168.68.101
+            username: Nextcloud_admin
+            password: N3xtcloud!@dmin
+
+    - Nextcloud-Cloud:
+        href: http://192.168.68.80:101
+        description: cloud.stumpy-tech.uk
+        icon: si-nextcloud
+        siteMonitor:
+        widget:
+            type: nextcloud
+            url: http://192.168.68.101
+            username: Craig
+            password: N3xtcloudadmin
+
+- Monitoring & Docker:
+
+    - UptimeKuma:
+        href: http://192.168.68.95:3001
+        description: Uptime Kuma Proxmox
+        icon: si-uptimekuma
+        siteMonitor: http://192.168.68.95:3001
+        widget:
+            type: uptimekuma
+            url: http://192.168.68.95:3001
+            slug: proxmox
+
+    - Docker-Manager:
+        href: http://192.168.68.110:9000
+        description: Docker Management
+        icon: si-docker
+        siteMonitor: http://192.168.68.110:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.110:9000
+            env: 2
+            key: ptr_OqvDElV8/ENGWDX27SnZsMISspxOAQ+XW62i1fM4+Nc=
+
+    - Pihosted-Docker:
+        href: http://192.168.68.65:9000
+        description: Pihosted Docker
+        icon: https://avatars.githubusercontent.com/u/93388274?s=280&v=4
+        siteMonitor: http://192.168.68.65:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.65:9000
+            env: 2
+            key: ptr_lJy8SiaBtUojcPvqIDwb2IKDNqLCxbQ08hqNT5R4XvM=
+
+    - Exposed-Docker:
+        href: http://192.168.68.76:9000
+        description: Pihosted Docker
+        icon: si-docker
+        siteMonitor: http://192.168.68.76:9000
+        widget:
+            type: portainer
+            url: http://192.168.68.76:9000
+            env: 2
+            key: ptr_HVJu81UqznrJKmkwUNMMwNKJD5836OLuDdc0bVCi7vQ=
+
+    - Internal-Dockge-LXC:
+        href: http://192.168.68.111:5001
+        description: Dockge-LXC-Internal
+        icon: dockge.png
+        siteMonitor: http://192.168.68.111:5001
+
+    - OpenWrt:
+        href: http://192.168.68.88:80
+        description: OpenWRT-LXC
+        icon: si-openwrt
+        siteMonitor: http://192.168.68.88:80/
+        #widget:
+        #    type: openwrt
+        #    url: http://192.168.68.87
+        #    username: homepage
+        #    password: Proxm0xv3wrt
+        #   interfaceName: tun0 # optional
+
+
+
+- Media:
+    - Sonarr:
+        href: http://192.168.68.65:8989
+        description: TV Libary
+        icon: si-sonarr
+        widget:
+            type: sonarr
+            url: http://192.168.68.65:8989
+            key: 26238384db12416aaa6ad0ea8cd12004
+            enableQueue: true # optional, defaults to false
+    - Radarr:
+        href: http://192.168.68.65:7878
+        description: Movie Libary
+        icon: si-radarr
+        widget:
+            type: radarr
+            url: http://192.168.68.65:7878
+            key: 3ae3e102f7484f2b997a297da3b48c9e
+            enableQueue: true # optional, defaults to false
+
+    - Jellyserr:
+        href: http://192.168.68.91:5055/
+        description: Media Search Tool
+        icon: jellyseerr.png
+        widget:
+            type: jellyseerr
+            url: http://192.168.68.91:5055
+            key: MTcyMTM5MDUwNzQ2NDY2YjdkN2Y1LTAwOTUtNDU5ZC04Mjg5LWE3MDk4NDZlYjRjNw==
+
+    - Qbitorrent:
+        href: http://192.168.68.65:8008/
+        description: TV Downloader
+        icon: si-qbittorrent
+        widget:
+            type: qbittorrent
+            url: http://192.168.68.65:8008
+
+    - Deluge:
+        href: http://192.168.68.65:8112/
+        description: Movies Downloader
+        icon: si-deluge
+        widget:
+            type: deluge
+            url: http://192.168.68.65:8112
+            password: Pihosted # webui password
+
+    - Proxfin-LXC:
+        href: http://192.168.68.200:8096/
+        description: Proxfin-LXC
+        icon: si-jellyfin
+        widget:
+            type: jellyfin
+            url: http://192.168.68.200:8096
+            key: 3709f7e1778540d6937e6400f482efb0
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: true # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - Jellyfin-GPU-LXC:
+        href: http://192.168.68.90:8096/
+        description: Jellyfin-GPU-LXC
+        icon: si-jellyfin
+        widget:
+            type: jellyfin
+            url: http://192.168.68.90:8096
+            key: e71fb13185fb4f688b2d5034e40d406c
+            enableBlocks: true # optional, defaults to false
+            enableNowPlaying: true # optional, defaults to true
+            enableUser: true # optional, defaults to false
+            showEpisodeNumber: true # optional, defaults to false
+            expandOneStreamToTwoRows: false # optional, defaults to true
+
+- Tools & Apps:
+
+    - Gotify:
+        href: http://192.168.68.111:81
+        description: Gotify-Notifications
+        icon: gotify.png
+        widget:
+            type: gotify
+            url: http://192.168.68.111:81
+            key: Cu5I5mJtPKQdWAB
+
+    - Immich:
+        href: http://immich.stumpy-tech.uk
+        description: Immich
+        icon: si-immich
+        widget:
+            type: immich
+            url: http://192.168.68.76:2283
+            key: HaV7hBaz1rtahSSQPRdE8c6pc6kd8AAm6wqfUy63mQ
+
+- Calendar:
+    - Calendar:
+        widget:
+          type: calendar
+          view: monthly # or 'agenda' if you prefer a list view
+          maxEvents: 10 # optional - defaults to 10
+          showTime: true # optional - show time for event happening today - defaults to false
+          previousDays: 3 # optional - shows events since three days ago - defaults to 0
+          firstDayInWeek: monday # or 'monday', depending on your preference
+          integrations:
+            - type: Sonarr
+              group: Media # This should match the group name where Sonarr is configured
+              service_name: sonarr # This should match the service name used for Sonarr
+              color: teal # You can choose a color for the events from Sonarr
+              params:
+                #unmonitored: true # Optional parameter for Sonarr
+            - type: Radarr
+              group: Media # This should match the group name where Radarr is configured
+              service_name: radarr # This should match the service name used for Radarr
+              color: blue # You can choose a color for the events from Radarr
+              params:
+                #unmonitored: true # Optional parameter for Radarr
+

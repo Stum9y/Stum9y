@@ -1,0 +1,35 @@
+services:
+
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: true
+    restart: always
+    container_name: nextcloud-aio-mastercontainer # This line is not allowed to be changed.
+    network_mode: default
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config # This line is not allowed to be changed.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8080:8080
+    environment:
+      AIO_COMMUNITY_CONTAINERS: ${AIO_COMMUNITY_CONTAINERS}
+      APACHE_PORT: ${APACHE_PORT}
+      NC_TRUSTED_PROXIES: ${NC_TRUSTED_PROXIES}
+      FULLTEXTSEARCH_JAVA_OPTIONS: ${FULLTEXTSEARCH_JAVA_OPTIONS}
+      NEXTCLOUD_DATADIR: ${NEXTCLOUD_DATADIR}
+      # NEXTCLOUD_MOUNT: /mnt/ # Allows the Nextcloud container to access the chosen directory on the host.
+      NEXTCLOUD_UPLOAD_LIMIT: ${NEXTCLOUD_UPLOAD_LIMIT}
+      NEXTCLOUD_MAX_TIME: ${NEXTCLOUD_MAX_TIME}
+      NEXTCLOUD_MEMORY_LIMIT: ${NEXTCLOUD_MEMORY_LIMIT}
+      # NEXTCLOUD_ENABLE_DRI_DEVICE: true # Intel QuickSync
+      SKIP_DOMAIN_VALIDATION: ${SKIP_DOMAIN_VALIDATION}
+      # TALK_PORT: 3478 # This allows to adjust the port that the talk container is using which is exposed on the host. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-talk-port
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer # This line is not allowed to be changed.
+#
+# networks:
+#   default:
+#     external: true
+#     name: nginx

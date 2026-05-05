@@ -1,0 +1,8 @@
+#WG-Easy Vars#
+WG_HOST=0lgwgzy.stumpy-tech.uk
+PASSWORD=W1reguardstumpy-tech
+WG_PORT=51890
+WG_DEFAULT_DNS=192.168.69.10
+
+# Volume path
+WG_DATA_PATH=/home/linuxadmin/docker/wgeasy

@@ -1,0 +1,12 @@
+name: Pihole Exporter
+services:
+    pihole-exporter:
+        image: 'ekofr/pihole-exporter:latest'
+        ports:
+            - '9617:9617'
+        environment:
+            - 'PORT=9617'
+            - 'PIHOLE_PORT=XXXXXX'
+            - 'PIHOLE_API_TOKEN=P1holeunboundlxc,5aP9Pfaf1DQBN9MqPib/42QbQ/X63+sLjRwAxWB4vjk=,SE9tOKmKIuiJyPhxOohqt/wqH5U6NJ4/x36kyOuKw5w='
+            - 'PIHOLE_HOSTNAME=192.168.68.151,192.168.68.152,192.168.68.153'
+            - 'PIHOLE_PROTOCOL=http,http,http'

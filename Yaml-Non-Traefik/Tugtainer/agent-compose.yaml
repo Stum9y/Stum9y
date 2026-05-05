@@ -1,0 +1,11 @@
+services:
+  tugtainer_agent:
+    image: quenary/tugtainer:latest
+    container_name: tugtainer_agent
+    ports:
+      - 9412:80
+    environment:
+      - AGENT_SECRET=${AGENT_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped

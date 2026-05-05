@@ -1,0 +1,50 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: []
+    scheme: http
+    timeout: 10s
+    api_version: v2
+
+scrape_configs:
+- job_name: prometheus
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - localhost:9090
+
+- job_name: Pihole-4b
+  static_configs:
+  - targets:
+    - 192.168.68.151:9617
+
+- job_name: Pihole-3b
+  static_configs:
+  - targets:
+    - 192.168.68.152:9617
+
+- job_name: Pihole-LXC
+  static_configs:
+  - targets:
+    - 192.168.68.153:9617
+
+#- job_name: MySpeed
+#  static_configs:
+#  - targets:
+#    - 192.168.68.74:9090
+- job_name: node_exporter
+  static_configs:
+  - targets:
+    - grafana-monitoring:9100
+#     - localhost:9617
+#     - Nextcloud:9100
+#     - unRAID:9100

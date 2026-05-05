@@ -1,0 +1,30 @@
+services:
+  wg-easy:
+    image: weejewel/wg-easy:latest
+    container_name: wg-easy
+    environment:
+      - WG_HOST=${WG_HOST}               # The public hostname of your VPN server
+      - PASSWORD=${PASSWORD}             # Web UI password
+      - WG_PORT=${WG_PORT}               # Public UDP port
+      - WG_DEFAULT_DNS=${WG_DEFAULT_DNS} # DNS servers
+      - WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}
+      - WG_MTU=${WG_MTU}
+      - WG_ALLOWED_IPS=${WG_ALLOWED_IPS}
+      - WG_MTU=${WG_MTU}
+      - WG_ALLOWED_IPS=${WG_ALLOWED_IPS}
+      - WG_PRE_UP=${WG_PRE_UP}
+      - WG_POST_UP=${WG_POST_UP}
+      - WG_PRE_DOWN=${WG_PRE_DOWN}
+      - WG_POST_DOWN=${WG_POST_DOWN}
+    volumes:
+      - "${WG_DATA_PATH}:/etc/wireguard"
+    ports:
+      - "${WG_PORT}:51820/udp"
+      - "51891:51821/tcp"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: always
