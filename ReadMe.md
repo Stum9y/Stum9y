@@ -8,7 +8,7 @@ This GitHub is where I document projects, experiments, and lessons learned as I 
 
 ## 🔗 Connect With Me
 
-<a href="https://www.linkedin.com/in/craig-rudd-542088155" target="_blank">
+<a href="www.linkedin.com/in/craigrudd" target="_blank">
   <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="32" alt="LinkedIn">
 </a>
 
