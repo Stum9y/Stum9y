@@ -1,6 +1,6 @@
 # 👋 Hi, welcome to my GitHub profile!
 
-I’m **Stum9y (Craig)** — an IT Service Desk Analyst with a strong interest in cloud technologies, automation, and hands‑on homelab learning. I’m driven by a passion for building, breaking (and fixing) systems to better understand how things *really* work under the hood.
+I’m **Stum9y (Craig)** an IT Service Desk Analyst with a strong interest in cloud technologies, automation, and hands‑on homelab learning. I’m driven by a passion for building, breaking (and fixing) systems to better understand how things *really* work under the hood.
 
 This GitHub is where I document projects, experiments, and lessons learned as I continue developing my skills in infrastructure, automation, and cloud technologies.
 
@@ -23,7 +23,7 @@ _Click the LinkedIn logo to connect with me._
 
 - 💻 IT Service Desk Analyst  
 - 🧠 Strong interest in infrastructure, identity, and automation  
-- 🧪 Hands‑on learner — I learn best by building and rebuilding  
+- 🧪 Hands‑on learner - I learn best by building and rebuilding  
 - ☁️ Exploring cloud concepts across on‑prem and hybrid environments  
 
 I enjoy moving beyond “click‑ops” and understanding *why* systems behave the way they do.
