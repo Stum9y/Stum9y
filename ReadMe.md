@@ -78,4 +78,4 @@ Most projects begin with
 
 ---
 
-Thanks for stopping by — feel free to have a look around and see what I’m building! 🚀
+Thanks for stopping by feel free to have a look around and see what I’m building! 🚀
