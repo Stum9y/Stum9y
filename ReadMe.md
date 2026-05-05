@@ -74,8 +74,7 @@ _Click the badge to view credential verification._
 
 ## ⚡ Fun Fact
 Most projects begin with  
-**“This should be simple…”**  
-and end with **better documentation and a stronger understanding**.
+**“This should be simple…”** and end with **"better documentation and a stronger understanding"**.
 
 ---
 
